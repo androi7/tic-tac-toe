@@ -1,0 +1,14 @@
+* {
+  border-sizing: border-box;
+}
+
+#board {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: space-between;
+  justify-content: space-between;
+  width: 40%;
+  margin: 5rem auto;
+  border: 2px solid black;
+  box-shadow: 1px 1px 2px grey;
+}
