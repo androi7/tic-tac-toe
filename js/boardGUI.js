@@ -8,7 +8,7 @@ $(document).ready(function() {
       return Math.floor(this.boardWidth()/width);
     },
 
-    createBoard: function(width, height, tokens) {
+    createBoard: function(width, height, tokens, checkAmount = 3) {
       boardLogic.createCheckArray(width, height);
       for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
@@ -36,7 +36,7 @@ $(document).ready(function() {
             const token = newThis.player ? tokens[0] : tokens[1];
             $(this).text(token.toString());
             boardLogic.addToken(i, j, token); // add token to check array
-            boardLogic.checkResult(i, j, token);
+            boardLogic.checkResult(i, j, token, checkAmount);
             //console.log('player1', newThis.player);
             newThis.player = !newThis.player;
             //console.log('player2', newThis.player);
@@ -44,16 +44,17 @@ $(document).ready(function() {
           $('#board').append($boardBox);
         }
       }
+      //this.createResizeBoard(width, height, tokens);
     },
 
-    createResizeBoard: function(width, height, tokens) {
-      $(window).resize(function() {
+    createResizeBoard: function(width, height, tokens, checkAmount) {
+      $(window).resize(() => { // arrow function to bind this
         $('div[data-box-row]').remove();
-        this.createBoard(width, height, tokens);
+        this.createBoard(width, height, tokens, checkAmount);
       });
     }
   };
 
-  boardGui.createBoard(4,4,['X', 'O']);
-  boardGui.createResizeBoard(4,4,['X', 'O']);
+  boardGui.createBoard(8,8,['X', 'O'],4);
+  boardGui.createResizeBoard(8,8,['X', 'O'],4);
 });
