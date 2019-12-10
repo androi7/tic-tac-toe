@@ -3,7 +3,8 @@ $(document).ready(function() {
   let boardArray = null;
 
   const createBoard = function(width, height) {
-    boardArray = new Array(height).fill(' ').map(() => new Array(width).fill(' '));
+    boardArray = new Array(height).fill('').map(() => new Array(width).fill(''));
+    console.log(boardArray);
     const boardWidth = Math.floor($(document).width()*0.4);
     for (let i = 0; i < height; i++) {
       for (let j = 0; j < width; j++) {
@@ -40,10 +41,12 @@ $(document).ready(function() {
     for (const item of boardArray) {
       if (item.join('').match('[X]{3}')) {
         console.log('X won!');
+        $('#debug').text('debug: X won!');
         $('div').off();
         return;
       } else if (item.join('').match('[O]{3}')) {
         console.log('O won!');
+        $('#debug').text('debug: O won!');
         $('div').off();
         return;
       }
@@ -56,11 +59,13 @@ $(document).ready(function() {
           console.log(boardColumnCopy[j]);
           if (boardColumnCopy[j].match('[X]{3}')) {
             console.log('X won!');
+            $('#debug').text('debug: X won!');
             $('div').off();
             return;
           } else if (boardColumnCopy[j]
             .match('[O]{3}')) {
             console.log('O won!');
+            $('#debug').text('debug: O won!');
             $('div').off();
             return;
           } else {
@@ -73,9 +78,11 @@ $(document).ready(function() {
       for (let j = 1; j < boardArray[i].length - 1; j++) {
         if (boardArray[i][j] === 'X' && (boardArray[i-1][j-1] === 'X' && boardArray[i+1][j+1] === 'X' || boardArray[i-1][j+1] === 'X' && boardArray[i+1][j-1] === 'X')) {
           console.log('X won!');
+          $('#debug').text('debug: X won!');
           $('div').off();
         } else if (boardArray[i][j] === 'O' && (boardArray[i-1][j-1] === 'O' && boardArray[i+1][j+1] === 'O' || boardArray[i-1][j+1] === 'O' && boardArray[i+1][j-1] === 'O')) {
           console.log('O won!');
+          $('#debug').text('debug: Y won!');
           $('div').off();
         }
       }
@@ -83,10 +90,10 @@ $(document).ready(function() {
   };
 
 
-  createBoard(5, 5);
+  createBoard(4, 4);
   $(window).resize(function() {
     $('div[data-box-row]').remove();
-    createBoard(5, 5);
+    createBoard(4, 4);
   });
 
 
