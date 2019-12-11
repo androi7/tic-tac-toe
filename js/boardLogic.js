@@ -1,4 +1,3 @@
-// $(document).ready(function () {
 const boardLogic = {
 
   boardArray: null,
@@ -6,12 +5,13 @@ const boardLogic = {
   diagonalLine: [],
 
   createCheckArray: function(width, height) {
+    console.log(width);
+    console.log(height);
     this.boardArray = new Array(height).fill('').map(() => new Array(width).fill(' ')); //last fill needs whitespace, because arrays get joined for examination
   },
 
   addToken: function(row, col, token) {
     this.boardArray[row][col] = token;
-    //console.log(this.boardArray);
   },
 
   checkResult: function(row, col, token, amount) {
@@ -19,8 +19,7 @@ const boardLogic = {
     // match throws back a object with the index of the beginning match (row)
     const matchObjHorizontal= this.boardArray[row].join('').match(`[${token}]{${amount}}`);
     if (matchObjHorizontal) {
-      $('#debug').text(`debug: ${token} won!`);
-      $('div').off();
+      $('.boardBox').off();
       return [col, matchObjHorizontal.index, token];
     }
 
@@ -29,8 +28,7 @@ const boardLogic = {
       this.columnCopy.push(this.boardArray[i][col]);
       const matchObjVertical = this.columnCopy.join('').match(`[${token}]{${amount}}`);
       if (i === this.boardArray.length - 1 && matchObjVertical) {
-        $('#debug').text(`debug: ${token} won!`);
-        $('div').off();
+        $('.boardBox').off();
         return [col, matchObjVertical.index, token];
       }
     }
@@ -46,8 +44,7 @@ const boardLogic = {
           if (i === (amount - 1)) {
             //console.log('inside',this.diagnoalLine);
             if (this.diagonalLine.join('').match(`[${token}]{${amount}}`)) {
-              $('#debug').text(`debug: ${token} won!`);
-              $('div').off();
+              $('.boardBox').off();
               return;
             } else {
               this.diagonalLine = [];
@@ -65,8 +62,7 @@ const boardLogic = {
           if (i === (amount - 1)) {
             //console.log('inside',this.diagnoalLine);
             if (this.diagonalLine.join('').match(`[${token}]{${amount}}`)) {
-              $('#debug').text(`debug: ${token} won!`);
-              $('div').off();
+              $('.boardBox').off();
               return;
             } else {
               this.diagonalLine = [];

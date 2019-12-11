@@ -21,10 +21,9 @@
     </section>
     <section id="board">
     </section>
-    <button>Reset</button>
     <article class="settings">
       <div class="settingsInput">
-        <label for="setPlayer1">Player 1</label>
+        <label for="setPlayer1">Name 1:</label>
         <input type="text" id="setPlayer1">
         <select>
           <option id="token1" value="X">X</option>
@@ -32,8 +31,21 @@
         </select>
       </div>
       <div class="settingsInput">
-        <label for="setPlayer2">Player 2</label>
+        <label for="setPlayer2">Name 2:</label>
         <input type="text" id="setPlayer2">
+      </div>
+      <div class="settingsInput">
+        <label>Board size:</label>
+        <input type="number" id="boardWidth" min="3" max="10" value="3"><span>X</span>
+        <input type="number" id="boardHeight" min="3" max="10" value="3">
+      </div>
+      <div class="settingsInput">
+        <label for="rounds">Wins:</label>
+        <input type="number" id="rounds" min="1" max="10" value="1">
+      </div>
+      <div class="settingsInput">
+        <label for="">Symbols:</label>
+        <input type="number" id="symbols" min="3" max="6" value="3">
       </div>
       <button id="start" class="settingsInput">Start</button>
     </article>

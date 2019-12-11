@@ -116,8 +116,6 @@ h1 {
   border: 1px solid white;
 }
 
-
-
 .settingsInput {
   display: block;
   margin: 1rem;
@@ -131,4 +129,9 @@ input {
   border-radius: 5px;
   padding: 0.5rem 1rem;
   margin: 1rem auto;
+}
+
+.redFont {
+  color: red;
+  text-shadow: 0 0 5px red;
 }
