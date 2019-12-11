@@ -26,7 +26,8 @@ $(document).ready(function() {
         this.height = parseInt($('#boardHeight').val());
         this.rounds = parseInt($('#rounds').val());
         this.symbolAmount = parseInt($('#symbols').val()); // how many symbols have to be in a row
-
+        this.fireBaseSetPlayer();
+        this.fireBaseGetData();
         $('.settings').fadeOut(400);
         // display from none to flex then hide for using fadeIn
         $('#board').css('display', 'flex');
@@ -38,11 +39,20 @@ $(document).ready(function() {
         $('#player1').addClass('redFont');
         $('#scoreField').hide();
 
-        this.createResizeBoard(); //boardWidth, boardHeight, this.tokens, rounds
+        //this.createBoard();
+        this.createResizeBoard();
 
         $('#scoreField').fadeIn(1000);
         $('#board').fadeIn(1000);
       });
+    },
+
+    fireBaseSetPlayer: function() {
+      firebase.postData('player1', this.player1);
+    },
+
+    fireBaseGetData: function() {
+      console.log('Get:',firebase.getData('player1'));
     },
 
     createBoard: function() { // width, height, tokens, checkAmount
@@ -143,7 +153,15 @@ $(document).ready(function() {
         } else if (this.tokens.indexOf(winner) === 1) {
           $('#scorePlayer2').text(parseInt($('#scorePlayer2').text()) + 1);
           this.reset();
+        } else if (winner === 'draw') {
+          this.reset();
         }
+      }
+    },
+
+    checkWinner: function(player) {
+      if (player === ) {
+
       }
     },
 

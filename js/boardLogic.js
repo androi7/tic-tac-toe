@@ -80,6 +80,12 @@ const boardLogic = {
         }
       }
     }
-    return [,,,]; // if not matched, return complete array undefined
+
+    // if all elements in the nested array are occupied and no matches are found, then draw
+    if (this.boardArray.every(elem => elem.every(item => item !== ' ' ))) {
+      return [,,'draw',];
+    }
+
+    return []; // if not matched and no draw, return complete array undefined
   }
 };
