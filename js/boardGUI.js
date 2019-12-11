@@ -108,6 +108,15 @@ $(document).ready(function() {
         for (let i = 0; i < amount; i++) {
           $(`[data-box-row=${row+i}][data-box-col=${col}]`).addClass('redFont');
         }
+      } else if (sort === 'dl') {
+        for (let i = 0; i < amount; i++) {
+          $(`[data-box-row=${row+i}][data-box-col=${col+i}]`).addClass('redFont');
+        }
+      } else if (sort === 'dr') {
+        for (let i = 0; i < amount; i++) {
+          console.log('row', row, 'col', col);
+          $(`[data-box-row=${row+i}][data-box-col=${col-i}]`).addClass('redFont');
+        }
       }
     },
 
@@ -143,7 +152,7 @@ $(document).ready(function() {
     reset: function() {
       window.setTimeout(() => {
         $('div[data-box-row]').remove();
-        boardGui.createResizeBoard(4,4,this.tokens,3);
+        boardGui.createResizeBoard();
       }, 2000);
     }
 

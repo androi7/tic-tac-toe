@@ -134,4 +134,5 @@ input {
 .redFont {
   color: red;
   text-shadow: 0 0 5px red;
+  border-color: black;
 }

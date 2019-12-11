@@ -1,8 +1,8 @@
 const boardLogic = {
 
   boardArray: null,
-  columnCopy: [],
-  diagonalLine: [],
+  columnCopy: [], // holds all tokens of a column for match() method in vertical examination
+  diagonalLine: [], // holds all tokens of diagonal lines for match() method in diagonal examination
 
   createCheckArray: function(width, height) {
     this.boardArray = new Array(height).fill('').map(() => new Array(width).fill(' ')); //last fill needs whitespace, because arrays get joined for examination
@@ -14,9 +14,12 @@ const boardLogic = {
 
   checkResult: function(row, col, token, amount) {
     // checks if player has won and returns [row, col, token, sort]
-    // row & col: first row and col of first position of token which is correct
-    // token: which symbol
-    // sort: kind of examination -> 'h', 'v', 'd'
+    // input row & col: position of the current token
+    // input token: token ('X' or 'O')
+    // input amount: how many token in a row
+    // return row & col: first row and col of first position of token which is correct
+    // return token: which symbol
+    // return sort: kind of examination -> 'h', 'v', 'dl', 'dr'
 
     // horizontal examination
     // check only current row
@@ -42,16 +45,17 @@ const boardLogic = {
 
     // diagonal examination
     // looping from left to right (left top to right bottom diagonal lines)
+    // iteration variables x & y need only to loop through from beginning to the first possible occurence of a potential diagonal match: array.length - (amount) - 1
+    // because it iterates through the diagonal line within the most inner loop (3. loop)
     for (let x = 0; x < this.boardArray.length - (amount - 1); x++) {
       for (let y = 0; y < this.boardArray[x].length - (amount - 1); y++) {
         for (let i = 0; i < amount; i++) {
           //console.log('outside', this.diagonalLine);
           this.diagonalLine.push(this.boardArray[x+i][y+i]);
           if (i === (amount - 1)) {
-            //console.log('inside',this.diagnoalLine);
             if (this.diagonalLine.join('').match(`[${token}]{${amount}}`)) {
               $('.boardBox').off();
-              return;
+              return [x, y, token, 'dl'];
             } else {
               this.diagonalLine = [];
             }
@@ -61,15 +65,14 @@ const boardLogic = {
     }
     // looping from right to left ( top right to bottom left diagonal lines)
     for (let x = 0; x < this.boardArray.length - (amount - 1); x++) {
-      for (let y = this.boardArray.length - 1; y > amount - 2; y--) {
+      for (let y = this.boardArray[x].length - 1; y > amount - 2; y--) {
         for (let i = 0; i < amount; i++) {
           //console.log('outside', this.diagonalLine);
           this.diagonalLine.push(this.boardArray[x+i][y-i]);
           if (i === (amount - 1)) {
-            //console.log('inside',this.diagnoalLine);
             if (this.diagonalLine.join('').match(`[${token}]{${amount}}`)) {
               $('.boardBox').off();
-              return;
+              return [x, y, token, 'dr'];
             } else {
               this.diagonalLine = [];
             }
@@ -77,6 +80,6 @@ const boardLogic = {
         }
       }
     }
-    return [,,,];
+    return [,,,]; // if not matched, return complete array undefined
   }
 };
