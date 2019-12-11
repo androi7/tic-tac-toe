@@ -16,7 +16,7 @@ h1 {
 #scoreField {
   width: 40%;
   margin: 0 auto;
-  display: none; /* grid; */
+  display: none;
   grid-template-columns: auto 2rem 1rem auto 2rem;
   grid-template-rows: 2rem;
   grid-column-gap: 0.5rem;

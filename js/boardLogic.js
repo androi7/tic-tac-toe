@@ -21,7 +21,7 @@ const boardLogic = {
     if (matchObjHorizontal) {
       $('#debug').text(`debug: ${token} won!`);
       $('div').off();
-      return [col, matchObjHorizontal.index];
+      return [col, matchObjHorizontal.index, token];
     }
 
     // vertical examination
@@ -31,7 +31,7 @@ const boardLogic = {
       if (i === this.boardArray.length - 1 && matchObjVertical) {
         $('#debug').text(`debug: ${token} won!`);
         $('div').off();
-        return [col, matchObjVertical.index];
+        return [col, matchObjVertical.index, token];
       }
     }
     this.columnCopy = [];
@@ -41,10 +41,10 @@ const boardLogic = {
     for (let x = 0; x < this.boardArray.length - (amount - 1); x++) {
       for (let y = 0; y < this.boardArray[x].length - (amount - 1); y++) {
         for (let i = 0; i < amount; i++) {
-          console.log('outside', this.diagonalLine);
+          //console.log('outside', this.diagonalLine);
           this.diagonalLine.push(this.boardArray[x+i][y+i]);
           if (i === (amount - 1)) {
-            console.log('inside',this.diagnoalLine);
+            //console.log('inside',this.diagnoalLine);
             if (this.diagonalLine.join('').match(`[${token}]{${amount}}`)) {
               $('#debug').text(`debug: ${token} won!`);
               $('div').off();
@@ -60,10 +60,10 @@ const boardLogic = {
     for (let x = 0; x < this.boardArray.length - (amount - 1); x++) {
       for (let y = this.boardArray.length - 1; y > amount - 2; y--) {
         for (let i = 0; i < amount; i++) {
-          console.log('outside', this.diagonalLine);
+          //console.log('outside', this.diagonalLine);
           this.diagonalLine.push(this.boardArray[x+i][y-i]);
           if (i === (amount - 1)) {
-            console.log('inside',this.diagnoalLine);
+            //console.log('inside',this.diagnoalLine);
             if (this.diagonalLine.join('').match(`[${token}]{${amount}}`)) {
               $('#debug').text(`debug: ${token} won!`);
               $('div').off();
@@ -75,5 +75,6 @@ const boardLogic = {
         }
       }
     }
+    return [,,];
   }
 };
