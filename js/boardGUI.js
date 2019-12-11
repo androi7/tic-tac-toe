@@ -2,7 +2,7 @@ $(document).ready(function() {
   const boardGui = {
     player: true, // true => player1, false = player2
     boardWidth: function() {
-      return Math.floor($(window).width()*0.4);
+      return Math.floor($(window).width()*0.3); // 30% of screen
     },
     boxWidth: function(width) {
       return Math.floor(this.boardWidth()/width);
@@ -12,8 +12,8 @@ $(document).ready(function() {
     height: 3,
     symbolAmount: 3,
     rounds: 1,
-    player1: 'Player1',
-    player2: 'Player2',
+    player1: '',
+    player2: '',
     tokens: ['X', 'O'],
 
     startGame: function() {
@@ -25,7 +25,7 @@ $(document).ready(function() {
         this.width = parseInt($('#boardWidth').val());
         this.height = parseInt($('#boardHeight').val());
         this.rounds = parseInt($('#rounds').val());
-        this.symbolAmount = parseInt($('#symbols').val());
+        this.symbolAmount = parseInt($('#symbols').val()); // how many symbols have to be in a row
 
         $('.settings').fadeOut(400);
         // display from none to flex then hide for using fadeIn
@@ -33,8 +33,8 @@ $(document).ready(function() {
         $('#board').hide();
         // same css trick like for diplay flex
         $('#scoreField').css('display', 'grid');
-        $('#player1').text(this.player1);
-        $('#player2').text(this.player2);
+        $('#player1').text(this.player1 || 'Player1');
+        $('#player2').text(this.player2 || 'Player2');
         $('#player1').addClass('redFont');
         $('#scoreField').hide();
 
@@ -47,22 +47,17 @@ $(document).ready(function() {
 
     createBoard: function() { // width, height, tokens, checkAmount
       // to add CSS classes
-
-      const width = this.width;
-      const height = this.height;
-      //this.width = width;
-      //this.height = height;
-
       const self = this;
-      boardLogic.createCheckArray(width, height);
+      boardLogic.createCheckArray(this.width, this.height);
 
-      for (let i = 0; i < height; i++) {
-        for (let j = 0; j < width; j++) {
+      for (let i = 0; i < this.height; i++) {
+        for (let j = 0; j < this.width; j++) {
           const $boardBox = $('<div></div>').css({
-            'flex': `1 1 ${this.boxWidth(width)}px`, // (grow, shrink, basis) problem with border, box-sizing (4*width)
-            'height': `${this.boxWidth(width)}px`,
-            'line-height': `${this.boxWidth(width)}px`,
-            'font-size': `${this.boxWidth(width)/1.5}px`
+            'flex': `1 1 ${this.boxWidth(this.width)}px`, // (grow, shrink, basis)
+            'box-sizing': 'content-box',
+            'height': `${this.boxWidth(this.width)}px`,
+            'line-height': `${this.boxWidth(this.width)}px`,
+            'font-size': `${this.boxWidth(this.width)/1.5}px`
           }).attr({
             'data-box-row': i,
             'data-box-col': j,
@@ -75,9 +70,13 @@ $(document).ready(function() {
             }
             // player: true -> player1, player: false -> player2
             const token = self.player ? self.tokens[0] : self.tokens[1];
+            // add token to particular field
             $(this).text(token.toString());
+            // i: height/row, j: width/col
             boardLogic.addToken(i, j, token); // add token to check array
-            const [a, b, winnerToken] = boardLogic.checkResult(i, j, token, self.symbolAmount);
+            const [a, b, winnerToken, sort] = boardLogic.checkResult(i, j, token, self.symbolAmount);
+            console.log(a, b, winnerToken, sort);
+            self.showSequence(a, b, self.symbolAmount, sort);
 
             self.updateScore(winnerToken);
 
@@ -98,6 +97,18 @@ $(document).ready(function() {
         $('div[data-box-row]').remove();
         this.createBoard(); // width, height, tokens, checkAmount
       });
+    },
+
+    showSequence: function(row, col, amount, sort) {
+      if (sort === 'h') {
+        for (let i = 0; i < amount; i++) {
+          $(`[data-box-row=${row}][data-box-col=${col+i}]`).addClass('redFont');
+        }
+      } else if (sort === 'v') {
+        for (let i = 0; i < amount; i++) {
+          $(`[data-box-row=${row+i}][data-box-col=${col}]`).addClass('redFont');
+        }
+      }
     },
 
     addBoxCSSClasses: function() {

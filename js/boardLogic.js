@@ -5,8 +5,6 @@ const boardLogic = {
   diagonalLine: [],
 
   createCheckArray: function(width, height) {
-    console.log(width);
-    console.log(height);
     this.boardArray = new Array(height).fill('').map(() => new Array(width).fill(' ')); //last fill needs whitespace, because arrays get joined for examination
   },
 
@@ -15,22 +13,30 @@ const boardLogic = {
   },
 
   checkResult: function(row, col, token, amount) {
+    // checks if player has won and returns [row, col, token, sort]
+    // row & col: first row and col of first position of token which is correct
+    // token: which symbol
+    // sort: kind of examination -> 'h', 'v', 'd'
+
     // horizontal examination
+    // check only current row
     // match throws back a object with the index of the beginning match (row)
+    // null if no match/ index of first col of token
     const matchObjHorizontal= this.boardArray[row].join('').match(`[${token}]{${amount}}`);
     if (matchObjHorizontal) {
-      $('.boardBox').off();
-      return [col, matchObjHorizontal.index, token];
+      $('.boardBox').off(); // stop event listener
+      return [row, matchObjHorizontal.index, token, 'h'];
     }
 
     // vertical examination
     for (let i = 0; i < this.boardArray.length; i++) {
+      // check only specific col
       this.columnCopy.push(this.boardArray[i][col]);
-      const matchObjVertical = this.columnCopy.join('').match(`[${token}]{${amount}}`);
-      if (i === this.boardArray.length - 1 && matchObjVertical) {
-        $('.boardBox').off();
-        return [col, matchObjVertical.index, token];
-      }
+    }
+    const matchObjVertical = this.columnCopy.join('').match(`[${token}]{${amount}}`);
+    if (matchObjVertical) {
+      $('.boardBox').off();
+      return [matchObjVertical.index, col, token, 'v'];
     }
     this.columnCopy = [];
 
@@ -71,6 +77,6 @@ const boardLogic = {
         }
       }
     }
-    return [,,];
+    return [,,,];
   }
 };
