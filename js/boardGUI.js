@@ -19,7 +19,7 @@ $(document).ready(function() {
     startGame: function() {
       $('#start').on('click', () => { // arrow function due to this
         // get values from settings
-        this.tokens = this.tokens[0] === $('#token1').val() ? this.tokens : this.tokens.reverse();
+        this.tokens = this.tokens[0] === $('#tokenSelection').val() ? this.tokens : this.tokens.reverse();
         this.player1 = $('#setPlayer1').val();
         this.player2 = $('#setPlayer2').val();
         this.width = parseInt($('#boardWidth').val());
@@ -75,7 +75,7 @@ $(document).ready(function() {
             // i: height/row, j: width/col
             boardLogic.addToken(i, j, token); // add token to check array
             const [a, b, winnerToken, sort] = boardLogic.checkResult(i, j, token, self.symbolAmount);
-            console.log(a, b, winnerToken, sort);
+            //console.log(a, b, winnerToken, sort);
             self.showSequence(a, b, self.symbolAmount, sort);
 
             self.updateScore(winnerToken);
@@ -114,7 +114,6 @@ $(document).ready(function() {
         }
       } else if (sort === 'dr') {
         for (let i = 0; i < amount; i++) {
-          console.log('row', row, 'col', col);
           $(`[data-box-row=${row+i}][data-box-col=${col-i}]`).addClass('redFont');
         }
       }
@@ -139,7 +138,6 @@ $(document).ready(function() {
       if (winner !== undefined) {
         console.log('tokens:', this.tokens, 'winner', winner);
         if (this.tokens.indexOf(winner) === 0) {
-          console.log('worked?');
           $('#scorePlayer1').text(parseInt($('#scorePlayer1').text()) + 1);
           this.reset();
         } else if (this.tokens.indexOf(winner) === 1) {
