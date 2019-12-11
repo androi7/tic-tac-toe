@@ -1,14 +1,134 @@
 * {
-  border-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  background: #131313;
+  color: white;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+#scoreField {
+  width: 40%;
+  margin: 0 auto;
+  display: none; /* grid; */
+  grid-template-columns: auto 2rem 1rem auto 2rem;
+  grid-template-rows: 2rem;
+  grid-column-gap: 0.5rem;
+  justify-content: space-around;
+  align-content: center;
+  height: 4rem;
+  background: black;
+  align-items: center;
+  justify-items: center;
+  border-radius: 5px;
+  color: white;
+  font-size: 1.5rem;
+  border: 2px solid white;
+}
+
+#player1 {
+  grid-column: 1 / 2;
+}
+
+#scorePlayer1 {
+  grid-column: 2 / 3;
+}
+
+#player2 {
+  grid-column: 4 / 5;
+}
+
+#scorePlayer2 {
+  grid-column: 5 / 6;
 }
 
 #board {
-  display: flex;
+  display: none;
   flex-flow: row wrap;
   align-items: space-between;
   justify-content: space-between;
   width: 40%;
   margin: 5rem auto;
-  border: 2px solid black;
-  box-shadow: 1px 1px 2px grey;
+  border-radius: 10%;
+  box-shadow: 0 0 50px 20px rgb(91, 86, 86);
+}
+
+.boardBox {
+  border: 0.4rem solid;
+  border-image-source: linear-gradient(0deg, #4f6a7d, #2c3e50, #4f6a7d);
+  border-image-slice: 1;
+  background-color: rgba(240, 240, 240);
+  text-align: center;
+  color: black;
+}
+
+.boxSmallerBorder {
+  border: 0.2rem solid;
+}
+
+.boxBorderTopNone {
+  border-top: none;
+}
+
+.boxBorderLeftNone {
+  border-left: none;
+}
+
+.boxBorderRightNone {
+  border-right: none;
+}
+
+.boxBorderBottomNone {
+  border-bottom: none;
+}
+
+.boxBorderTopLeftRadius {
+  border-top-left-radius: 10%;
+}
+
+.boxBorderTopRightRadius {
+  border-top-right-radius: 10%;
+}
+
+.boxBorderBottomRightRadius {
+  border-bottom-right-radius: 10%;
+}
+
+.boxBorderBottomLeftRadius {
+  border-bottom-left-radius: 10%;
+}
+
+.boardBox:hover {
+  background: rgba(180, 180, 180, 1);
+  cursor: pointer;
+}
+
+.settings {
+  display: block;
+  width: 40%;
+  margin: 1rem auto;
+  border: 1px solid white;
+}
+
+
+
+.settingsInput {
+  display: block;
+  margin: 1rem;
+}
+
+input {
+  margin: 0 1rem;
+}
+
+#start {
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  margin: 1rem auto;
 }

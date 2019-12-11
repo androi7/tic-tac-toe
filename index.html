@@ -9,11 +9,36 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header></header>
+  <header>
+    <h1>Tic Tac Toe</h1>
+  </header>
   <main>
+    <section id="scoreField">
+      <div id="player1">Player1</div>
+      <div class="score" id="scorePlayer1">0</div>
+      <div id="player2">Player2</div>
+      <div class="score" id="scorePlayer2">0</div>
+    </section>
     <section id="board">
     </section>
-    <p id="debug" style="margin:0.5rem auto; width: 10rem;font-size:3rem;"></p>
+    <button>Reset</button>
+    <article class="settings">
+      <div class="settingsInput">
+        <label for="setPlayer1">Player 1</label>
+        <input type="text" id="setPlayer1">
+        <select>
+          <option id="token1" value="X">X</option>
+          <option id="token2" value="O">O</option>
+        </select>
+      </div>
+      <div class="settingsInput">
+        <label for="setPlayer2">Player 2</label>
+        <input type="text" id="setPlayer2">
+      </div>
+      <button id="start" class="settingsInput">Start</button>
+    </article>
+
+    <!-- <p id="debug" style="margin:0.5rem auto; width: 10rem;font-size:3rem;"></p> -->
   </main>
   <footer></footer>
   <script src="js/jquery.js"></script>

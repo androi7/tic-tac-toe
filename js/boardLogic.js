@@ -16,20 +16,22 @@ const boardLogic = {
 
   checkResult: function(row, col, token, amount) {
     // horizontal examination
-    if (this.boardArray[row].join('').match(`[${token}]{${amount}}`)) {
+    // match throws back a object with the index of the beginning match (row)
+    const matchObjHorizontal= this.boardArray[row].join('').match(`[${token}]{${amount}}`);
+    if (matchObjHorizontal) {
       $('#debug').text(`debug: ${token} won!`);
       $('div').off();
-      return;
+      return [col, matchObjHorizontal.index];
     }
 
     // vertical examination
     for (let i = 0; i < this.boardArray.length; i++) {
       this.columnCopy.push(this.boardArray[i][col]);
-      //console.log(this.columnCopy);
-      if (i === this.boardArray.length - 1 && this.columnCopy.join('').match(`[${token}]{${amount}}`)) {
+      const matchObjVertical = this.columnCopy.join('').match(`[${token}]{${amount}}`);
+      if (i === this.boardArray.length - 1 && matchObjVertical) {
         $('#debug').text(`debug: ${token} won!`);
         $('div').off();
-        return;
+        return [col, matchObjVertical.index];
       }
     }
     this.columnCopy = [];
