@@ -87,5 +87,11 @@ const boardLogic = {
     }
 
     return []; // if not matched and no draw, return complete array undefined
+  },
+
+  reset: function() {
+    this.boardArray = null;
+    this.columnCopy = [];
+    this.diagonalLine = [];
   }
 };

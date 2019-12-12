@@ -100,7 +100,7 @@ h1 {
 }
 @media only screen and (max-width: 660px) {
   #board {
-    width: 70%;
+    width: 80%;
   }
 }
 

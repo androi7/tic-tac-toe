@@ -3,7 +3,7 @@ $(document).ready(function() {
     player: true, // true => player1, false = player2
     boardWidth: function() {
       if ($(window).width() < 660) { // responsive design
-        return Math.floor($(window).width()*0.55);
+        return Math.floor($(window).width()*0.7);
       }
       return Math.floor($(window).width()*0.3); // 30% of screen
     },
@@ -82,7 +82,7 @@ $(document).ready(function() {
         }
       }
 
-       $('.boardBox').on('click', function() {
+      $('.boardBox').on('click', function() {
          if ($(this).text() !== '') { // new created divs are empty, not occupied by a token
            return;
          }
@@ -104,7 +104,7 @@ $(document).ready(function() {
          $('#player1').toggleClass('redFont');
          $('#player2').toggleClass('redFont');
 
-       });
+      });
       this.addBoxCSSClasses();
     },
 
@@ -173,10 +173,34 @@ $(document).ready(function() {
       if (player.playerScore === this.rounds) {
         $('#winner').text(player.name);
         $('.winnerField').css('display', 'block');
+        this.playAgain();
+        console.log(this.player);
+        console.log(this.players.player2.playerScore);
         return true;
       } else {
         return false;
       }
+    },
+
+    playAgain: function() {
+      const self = this;
+      $('.winnerField button').on('click', function() {
+        $('.winnerField').css('display', 'none');
+        $('#scoreField').fadeOut(1000);
+        $('#board').fadeOut(1000, function() {
+          // reset states
+          self.players.player1.playerScore = 0;
+          self.players.player2.playerScore = 0;
+          self.player = true;
+          boardLogic.reset();
+          $('#scorePlayer1').text(self.players.player1.playerScore);
+          $('#scorePlayer2').text(self.players.player2.playerScore);
+          $('#player1').removeClass('redFont');
+          $('#player2').removeClass('redFont');
+          $('div[data-box-row]').remove();
+          $('.settings').show();
+        });
+      })
     },
 
     reset: function(bool) {
