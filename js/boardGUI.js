@@ -11,6 +11,8 @@ $(document).ready(function() {
       return Math.floor(this.boardWidth()/width);
     },
     // default settings
+    resizeStateBefore: [],
+    resizeCounter: 0,
     width: 3,
     height: 3,
     symbolAmount: 3,
@@ -113,12 +115,33 @@ $(document).ready(function() {
       });
     },
 
-    createResizeBoard: function() { // width, height, tokens, checkAmount
-      this.createBoard(); // width, height, tokens, checkAmount
+    createResizeBoard: function() {
+      this.createBoard();
       $(window).resize(() => { // arrow function to bind this
         $('div[data-box-row]').remove();
-        this.createBoard(); // width, height, tokens, checkAmount
+        this.resizeCounter++;
+        if (this.resizeCounter === 1) {
+          this.resizeStateBefore = boardLogic.boardArray;
+        }
+        this.createBoard();
+        this.saveState();
       });
+    },
+
+    saveState: function() {
+      // get old data from boarLogic and add to new board divs
+      for (let i = 0; i < boardLogic.boardArray.length; i++) {
+        for (let j = 0; j < boardLogic.boardArray[i].length; j++) {
+          $(`[data-box-row=${i}][data-box-col=${j}]`).text(this.resizeStateBefore[i][j].trim());
+          // boardLogic array has whitespace which needs to be deleted
+        }
+      }
+      // resize event invokes several time, copied array will be deleted at the last invoke
+      if ($('.boardBox').text().match(/[XO]/)) {
+        boardLogic.boardArray = this.resizeStateBefore; // boardLogic Array got lost during resizing
+        this.resizeStateBefore = [];
+        this.resizeCounter = 0;
+      }
     },
 
     showSequence: function(row, col, amount, sort) {
