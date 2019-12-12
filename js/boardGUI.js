@@ -2,6 +2,9 @@ $(document).ready(function() {
   boardGui = {
     player: true, // true => player1, false = player2
     boardWidth: function() {
+      if ($(window).width() < 660) { // responsive design
+        return Math.floor($(window).width()*0.55);
+      }
       return Math.floor($(window).width()*0.3); // 30% of screen
     },
     boxWidth: function(width) {
@@ -39,10 +42,11 @@ $(document).ready(function() {
         this.rounds = parseInt($('#rounds').val());
         this.symbolAmount = parseInt($('#symbols').val()); // how many symbols have to be in a row
 
-        $('.settings').fadeOut(400);
+        $('.settings').hide();
         // display from none to flex then hide for using fadeIn
         $('#board').css('display', 'flex');
         $('#board').hide();
+
         // same css trick like for diplay flex
         $('#scoreField').css('display', 'grid');
         $('#player1').text(this.players.player1.name);
@@ -65,48 +69,42 @@ $(document).ready(function() {
 
       for (let i = 0; i < this.height; i++) {
         for (let j = 0; j < this.width; j++) {
-          const $boardBox = $('<div>').css({
+          const $boardBox = $('<div class="boardBox">').css({
             'flex': `1 1 ${this.boxWidth(this.width)}px`, // (grow, shrink, basis)
-            'box-sizing': 'content-box',
             'height': `${this.boxWidth(this.width)}px`,
             'line-height': `${this.boxWidth(this.width)}px`,
             'font-size': `${this.boxWidth(this.width)/1.5}px`
           }).attr({
             'data-box-row': i,
-            'data-box-col': j,
-            'class': 'boardBox',
-          });
-
-         // $boardBox.data('box-row')
-
-         // $(document).on('click', '.boardBox', function(){ });
-        // $('.boardBox').on('click', function() {
-
-          $boardBox.on('click', function() {
-            if ($(this).text() !== '') { // new created divs are empty, not occupied by a token
-              return;
-            }
-            // player: true -> player1, player: false -> player2
-            const token = self.player ? self.tokens[0] : self.tokens[1];
-            // add token to particular field
-            $(this).text(token.toString());
-            // i: height/row, j: width/col
-            boardLogic.addToken(i, j, token); // add token to check array
-            const [a, b, winnerToken, sort] = boardLogic.checkResult(i, j, token, self.symbolAmount);
-            //console.log(a, b, winnerToken, sort);
-            self.showSequence(a, b, self.symbolAmount, sort);
-
-            self.updateScore(winnerToken);
-
-            self.player = !self.player;
-            $('#player1').toggleClass('redFont');
-            $('#player2').toggleClass('redFont');
-
+            'data-box-col': j
           });
           $('#board').append($boardBox);
-
         }
       }
+
+       $('.boardBox').on('click', function() {
+         if ($(this).text() !== '') { // new created divs are empty, not occupied by a token
+           return;
+         }
+         // player: true -> player1, player: false -> player2
+         const token = self.player ? self.tokens[0] : self.tokens[1];
+         // add token to particular field
+         $(this).text(token.toString());
+         // i: height/row, j: width/col
+         const row = $(this).data('box-row');
+         const col = $(this).data('box-col');
+         boardLogic.addToken(row, col, token); // add token to check array
+         const [a, b, winnerToken, sort] = boardLogic.checkResult(row, col, token, self.symbolAmount);
+         //console.log(a, b, winnerToken, sort);
+         self.showSequence(a, b, self.symbolAmount, sort);
+
+         self.updateScore(winnerToken);
+
+         self.player = !self.player;
+         $('#player1').toggleClass('redFont');
+         $('#player2').toggleClass('redFont');
+
+       });
       this.addBoxCSSClasses();
     },
 

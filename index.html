@@ -21,39 +21,40 @@
     </section>
     <section class="winnerField">
       <p>Winner: <span id="winner"></span></p>
+      <button>Play again?</button>
     </section>
     <section id="board">
     </section>
     <article class="settings">
-      <div class="settingsInput">
-        <label for="setPlayer1">Name 1:</label>
-        <input type="text" id="setPlayer1">
-        <select id="tokenSelection">
-          <option id="token1" value="X">X</option>
-          <option id="token2" value="O">O</option>
-        </select>
-      </div>
-      <div class="settingsInput">
-        <label for="setPlayer2">Name 2:</label>
-        <input type="text" id="setPlayer2">
-      </div>
-      <div class="settingsInput">
-        <label>Board size:</label>
-        <input type="number" id="boardWidth" min="3" max="10" value="3"><span>X</span>
-        <input type="number" id="boardHeight" min="3" max="10" value="3">
-      </div>
-      <div class="settingsInput">
-        <label for="rounds">Wins:</label>
-        <input type="number" id="rounds" min="1" max="10" value="1">
-      </div>
-      <div class="settingsInput">
-        <label for="">Symbols:</label>
-        <input type="number" id="symbols" min="3" max="6" value="3">
-      </div>
-      <button id="start" class="settingsInput">Start</button>
+      <ul class="settingsLabel">
+        <li>
+          <label for="setPlayer1">Player 1:</label>
+          <input type="text" id="setPlayer1">
+          <select id="tokenSelection">
+            <option id="token1" value="X">X</option>
+            <option id="token2" value="O">O</option>
+          </select>
+        </li>
+        <li>
+          <label for="setPlayer2">Player 2:</label>
+          <input type="text" id="setPlayer2">
+        </li>
+        <li>
+          <label>Board size:</label>
+          <input type="number" id="boardWidth" min="3" max="10" value="3"><span class="boardX">X</span>
+          <input type="number" id="boardHeight" min="3" max="10" value="3">
+        </li>
+        <li>
+          <label for="rounds">Rounds (wins):</label>
+          <input type="number" id="rounds" min="1" max="10" value="1">
+        </li>
+        <li>
+          <label for="">How many symbols:</label>
+          <input type="number" id="symbols" min="3" max="6" value="3">
+        </li>
+      </ul>
+      <button id="start" class="btn-grad settingsInput">Start</button>
     </article>
-
-    <!-- <p id="debug" style="margin:0.5rem auto; width: 10rem;font-size:3rem;"></p> -->
   </main>
   <footer></footer>
   <script src="js/jquery.js"></script>
