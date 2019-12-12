@@ -2,7 +2,7 @@ const firebase = {
   baseURL: 'https://tic-tac-toe-39e7e.firebaseio.com/',
 
   getData: async function(path) {
-    const url = this.baseURL + path;
+    const url = this.baseURL + `${path}.json`;
     try {
       const response = await fetch(url);
       if (response.ok) {

@@ -48,13 +48,24 @@ h1 {
   grid-column: 5 / 6;
 }
 
+.winnerField {
+  /*visibility: hidden;*/
+  display: none;
+  width: 400px;
+  margin: 0 auto;
+  color: white;
+  text-align: center;
+  font-size: 2rem;
+}
+
+
 #board {
   display: none;
   flex-flow: row wrap;
   align-items: space-between;
   justify-content: space-between;
   width: 35%;
-  margin: 5rem auto;
+  margin: 2rem auto;
   border-radius: 10%;
   box-shadow: 0 0 50px 20px rgb(91, 86, 86);
 }

@@ -14,10 +14,13 @@
   </header>
   <main>
     <section id="scoreField">
-      <div id="player1">Player1</div>
+      <div id="player1"></div>
       <div class="score" id="scorePlayer1">0</div>
-      <div id="player2">Player2</div>
+      <div id="player2"></div>
       <div class="score" id="scorePlayer2">0</div>
+    </section>
+    <section class="winnerField">
+      <p>Winner: <span id="winner"></span></p>
     </section>
     <section id="board">
     </section>
@@ -55,7 +58,13 @@
   <footer></footer>
   <script src="js/jquery.js"></script>
   <script src="js/boardLogic.js"></script>
-  <script src="js/firebase.js"></script>
+  <!-- <script src="js/firebase.js"></script> -->
   <script src="js/boardGUI.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-database.js"></script>
+
+  <script src="js/firebase/init.js"></script>
 </body>
 </html>

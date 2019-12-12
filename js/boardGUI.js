@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  const boardGui = {
+  boardGui = {
     player: true, // true => player1, false = player2
     boardWidth: function() {
       return Math.floor($(window).width()*0.3); // 30% of screen
@@ -12,30 +12,41 @@ $(document).ready(function() {
     height: 3,
     symbolAmount: 3,
     rounds: 1,
-    player1: '',
-    player2: '',
     tokens: ['X', 'O'],
+    players: {
+      player1: {
+        name: '',
+        playerScore: 0,
+        token: 'X'
+      },
+      player2: {
+        name: '',
+        playerScore: 0,
+        token: 'O'
+      }
+    },
 
     startGame: function() {
       $('#start').on('click', () => { // arrow function due to this
         // get values from settings
         this.tokens = this.tokens[0] === $('#tokenSelection').val() ? this.tokens : this.tokens.reverse();
-        this.player1 = $('#setPlayer1').val();
-        this.player2 = $('#setPlayer2').val();
+        this.players.player1.token = this.tokens[0];
+        this.players.player2.token = this.tokens[1];
+        this.players.player1.name = $('#setPlayer1').val() || 'Player1';
+        this.players.player2.name = $('#setPlayer2').val() || 'Player2';
         this.width = parseInt($('#boardWidth').val());
         this.height = parseInt($('#boardHeight').val());
         this.rounds = parseInt($('#rounds').val());
         this.symbolAmount = parseInt($('#symbols').val()); // how many symbols have to be in a row
-        this.fireBaseSetPlayer();
-        this.fireBaseGetData();
+
         $('.settings').fadeOut(400);
         // display from none to flex then hide for using fadeIn
         $('#board').css('display', 'flex');
         $('#board').hide();
         // same css trick like for diplay flex
         $('#scoreField').css('display', 'grid');
-        $('#player1').text(this.player1 || 'Player1');
-        $('#player2').text(this.player2 || 'Player2');
+        $('#player1').text(this.players.player1.name);
+        $('#player2').text(this.players.player2.name);
         $('#player1').addClass('redFont');
         $('#scoreField').hide();
 
@@ -47,14 +58,6 @@ $(document).ready(function() {
       });
     },
 
-    fireBaseSetPlayer: function() {
-      firebase.postData('player1', this.player1);
-    },
-
-    fireBaseGetData: function() {
-      console.log('Get:',firebase.getData('player1'));
-    },
-
     createBoard: function() { // width, height, tokens, checkAmount
       // to add CSS classes
       const self = this;
@@ -62,7 +65,7 @@ $(document).ready(function() {
 
       for (let i = 0; i < this.height; i++) {
         for (let j = 0; j < this.width; j++) {
-          const $boardBox = $('<div></div>').css({
+          const $boardBox = $('<div>').css({
             'flex': `1 1 ${this.boxWidth(this.width)}px`, // (grow, shrink, basis)
             'box-sizing': 'content-box',
             'height': `${this.boxWidth(this.width)}px`,
@@ -73,6 +76,11 @@ $(document).ready(function() {
             'data-box-col': j,
             'class': 'boardBox',
           });
+
+         // $boardBox.data('box-row')
+
+         // $(document).on('click', '.boardBox', function(){ });
+        // $('.boardBox').on('click', function() {
 
           $boardBox.on('click', function() {
             if ($(this).text() !== '') { // new created divs are empty, not occupied by a token
@@ -96,6 +104,7 @@ $(document).ready(function() {
 
           });
           $('#board').append($boardBox);
+
         }
       }
       this.addBoxCSSClasses();
@@ -146,13 +155,16 @@ $(document).ready(function() {
 
     updateScore: function(winner) {
       if (winner !== undefined) {
-        console.log('tokens:', this.tokens, 'winner', winner);
         if (this.tokens.indexOf(winner) === 0) {
-          $('#scorePlayer1').text(parseInt($('#scorePlayer1').text()) + 1);
-          this.reset();
+          this.players.player1.playerScore++;
+          $('#scorePlayer1').text(this.players.player1.playerScore);
+          const won = this.checkWinner(this.players.player1);
+          this.reset(won);
         } else if (this.tokens.indexOf(winner) === 1) {
-          $('#scorePlayer2').text(parseInt($('#scorePlayer2').text()) + 1);
-          this.reset();
+          this.players.player2.playerScore++;
+          $('#scorePlayer2').text(this.players.player2.playerScore);
+          const won = this.checkWinner(this.players.player2);
+          this.reset(won);
         } else if (winner === 'draw') {
           this.reset();
         }
@@ -160,20 +172,25 @@ $(document).ready(function() {
     },
 
     checkWinner: function(player) {
-      if (player === ) {
-
+      if (player.playerScore === this.rounds) {
+        $('#winner').text(player.name);
+        $('.winnerField').css('display', 'block');
+        return true;
+      } else {
+        return false;
       }
     },
 
-    reset: function() {
-      window.setTimeout(() => {
-        $('div[data-box-row]').remove();
-        boardGui.createResizeBoard();
-      }, 2000);
+    reset: function(bool) {
+      if (!bool) {
+        window.setTimeout(() => {
+          $('div[data-box-row]').remove();
+          boardGui.createResizeBoard();
+        }, 2000);
+      }
     }
 
   };
 
-  //boardGui.createBoard(8,8,['X', 'O'],4);
   boardGui.startGame();
 });
