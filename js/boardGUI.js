@@ -31,18 +31,79 @@ $(document).ready(function() {
       }
     },
 
+
+    createOnlineGame: function() {
+      this.tokens = this.tokens[0] === $('#tokenSelection').val() ? this.tokens : this.tokens.reverse();
+      const player = this.players.player1;
+      player.name = $('#setPlayer1').val() || 'Player1';
+      player.token = this.tokens[0];
+      this.symbolAmount = parseInt($('#symbols').val());
+      this.rounds = parseInt($('#rounds').val());
+
+      // send to database
+      fireBase.writeData('/game', {
+        player: true,
+        symbolAmount: this.symbolAmount,
+        rounds: this.rounds,
+        player1: {
+          name: player.name,
+          playerScore: player.playerScore,
+          token: player.token
+        }
+      });
+    },
+
+    joinOnlineGame: function() {
+      const initialState = fireBase.readData('/game');
+      initialState.then(player1 => { // binding of this
+        console.log('promise',player1)
+        console.log(player1.player1);
+        console.log(player1.player1.name);
+        this.symbolAmount = player1.symbolAmount;
+        this.player = player1.player;
+        this.rounds = player1.rounds;
+        this.players.player1.name = player1.player1.name;
+        this.players.player1.token = player1.player1.token;
+        this.players.player1.playerScore = player1.player1.playerScore;
+      });
+
+      const player = this.players.player2;
+      player.name = $('#setPlayer2').val() || 'Player2';
+      player.token = this.tokens[1];
+
+      fireBase.writeData('/game/player2', {
+          name: player.name,
+          token: player.token,
+          playerScore: 0
+      });
+
+    },
+
     startGame: function() {
       $('#start').on('click', () => { // arrow function due to this
         // get values from settings
-        this.tokens = this.tokens[0] === $('#tokenSelection').val() ? this.tokens : this.tokens.reverse();
-        this.players.player1.token = this.tokens[0];
-        this.players.player2.token = this.tokens[1];
-        this.players.player1.name = $('#setPlayer1').val() || 'Player1';
-        this.players.player2.name = $('#setPlayer2').val() || 'Player2';
         this.width = parseInt($('#boardWidth').val());
         this.height = parseInt($('#boardHeight').val());
-        this.rounds = parseInt($('#rounds').val());
-        this.symbolAmount = parseInt($('#symbols').val()); // how many symbols have to be in a row
+
+        if ($('#offline').prop('checked')) {
+          console.log('offline');
+          this.tokens = this.tokens[0] === $('#tokenSelection').val() ? this.tokens : this.tokens.reverse();
+          this.players.player1.token = this.tokens[0];
+          this.players.player2.token = this.tokens[1];
+          this.players.player1.name = $('#setPlayer1').val() || 'Player1';
+          this.players.player2.name = $('#setPlayer2').val() || 'Player2';
+
+          this.rounds = parseInt($('#rounds').val());
+          this.symbolAmount = parseInt($('#symbols').val()); // how many symbols have to be in a row
+        }
+        else if ($('#create').prop('checked')) {
+          console.log('create');
+          this.createOnlineGame();
+        } else {
+          console.log('join');
+          this.joinOnlineGame();
+        }
+
 
         $('.settings').hide();
         // display from none to flex then hide for using fadeIn

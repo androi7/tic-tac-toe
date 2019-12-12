@@ -19,18 +19,22 @@ const fireBase = {
       firebase.database().ref(path).set(data);
   },
 
+  // updateData: function(path, data) {
+  //   firebase.database().ref().child(path)
+  // }
+
   listenToChanges: function(path) {
     firebase.database().ref(path).on('value', function(data) {
-      console.log('listen', data.val());
+      return data.val();
     });
   },
 
   readData: function(path) {
-    firebase.database().ref(path).once('value').then(function(data) {
-      return data;
+    return firebase.database().ref(path).once('value').then(function(data) {
+      return data.val();
     });
   }
 
-}
+};
 
 fireBase.init();
