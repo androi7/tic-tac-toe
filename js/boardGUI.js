@@ -64,7 +64,7 @@ $(document).ready(function() {
 
     createBoard: function() { // width, height, tokens, checkAmount
       // to add CSS classes
-      const self = this;
+      //const self = this;
       boardLogic.createCheckArray(this.width, this.height);
 
       for (let i = 0; i < this.height; i++) {
@@ -82,6 +82,12 @@ $(document).ready(function() {
         }
       }
 
+      this.clickBoard();
+      this.addBoxCSSClasses();
+    },
+
+    clickBoard: function() {
+      const self = this;
       $('.boardBox').on('click', function() {
          if ($(this).text() !== '') { // new created divs are empty, not occupied by a token
            return;
@@ -105,7 +111,6 @@ $(document).ready(function() {
          $('#player2').toggleClass('redFont');
 
       });
-      this.addBoxCSSClasses();
     },
 
     createResizeBoard: function() { // width, height, tokens, checkAmount
@@ -174,8 +179,6 @@ $(document).ready(function() {
         $('#winner').text(player.name);
         $('.winnerField').css('display', 'block');
         this.playAgain();
-        console.log(this.player);
-        console.log(this.players.player2.playerScore);
         return true;
       } else {
         return false;
@@ -185,6 +188,7 @@ $(document).ready(function() {
     playAgain: function() {
       const self = this;
       $('.winnerField button').on('click', function() {
+        $(window).off('resize');
         $('.winnerField').css('display', 'none');
         $('#scoreField').fadeOut(1000);
         $('#board').fadeOut(1000, function() {
