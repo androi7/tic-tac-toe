@@ -4,7 +4,11 @@
 **The game is still under construction and only the offline mode is working so far!**
 
 ## Link
-Link to Github Pages [Tic Tac Toe](https://androi7.github.io/tic-tac-toe/)
+Link to Github Page [Tic Tac Toe](https://androi7.github.io/tic-tac-toe/)
+
+## Screenshots
+![Game settings!](images/settings.png)
+![Game in process!](images/game.png)
 
 ## Settings
 1. Optional choose a name for each player (by default *Player1* and *Player2*
