@@ -3,6 +3,9 @@
 ## Important Note
 **The game is still under construction and only the offline mode is working so far!**
 
+## Link
+Link to Github Pages [Tic Tac Toe](https://androi7.github.io/tic-tac-toe/)
+
 ## Settings
 1. Optional choose a name for each player (by default *Player1* and *Player2*
 2. Only the first player is able to choose his favourite token of the list, the other player gets the corresponding remaining token (by default *X* for first player)
