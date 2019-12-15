@@ -31,54 +31,6 @@ $(document).ready(function() {
       }
     },
 
-
-    /*createOnlineGame: function() {
-      this.tokens = this.tokens[0] === $('#tokenSelection').val() ? this.tokens : this.tokens.reverse();
-      const player = this.players.player1;
-      player.name = $('#setPlayer1').val() || 'Player1';
-      player.token = this.tokens[0];
-      this.symbolAmount = parseInt($('#symbols').val());
-      this.rounds = parseInt($('#rounds').val());
-
-      // send to database
-      fireBase.writeData('/game', {
-        player: true,
-        symbolAmount: this.symbolAmount,
-        rounds: this.rounds,
-        player1: {
-          name: player.name,
-          playerScore: player.playerScore,
-          token: player.token
-        }
-      });
-    },
-
-    joinOnlineGame: function() {
-      const initialState = fireBase.readData('/game');
-      initialState.then(player1 => { // binding of this
-        console.log('promise',player1)
-        console.log(player1.player1);
-        console.log(player1.player1.name);
-        this.symbolAmount = player1.symbolAmount;
-        this.player = player1.player;
-        this.rounds = player1.rounds;
-        this.players.player1.name = player1.player1.name;
-        this.players.player1.token = player1.player1.token;
-        this.players.player1.playerScore = player1.player1.playerScore;
-      });
-
-      const player = this.players.player2;
-      player.name = $('#setPlayer2').val() || 'Player2';
-      player.token = this.tokens[1];
-
-      fireBase.writeData('/game/player2', {
-          name: player.name,
-          token: player.token,
-          playerScore: 0
-      });
-
-    },*/
-
     startGame: function() {
       $('#start').on('click', () => { // arrow function due to this
         // get values from settings
@@ -96,14 +48,6 @@ $(document).ready(function() {
           this.rounds = parseInt($('#rounds').val());
           this.symbolAmount = parseInt($('#symbols').val()); // how many symbols have to be in a row
         }
-        else if ($('#create').prop('checked')) {
-          console.log('create');
-          this.createOnlineGame();
-        } else {
-          console.log('join');
-          this.joinOnlineGame();
-        }
-
 
         $('.settings').hide();
         // display from none to flex then hide for using fadeIn
@@ -125,9 +69,7 @@ $(document).ready(function() {
       });
     },
 
-    createBoard: function() { // width, height, tokens, checkAmount
-      // to add CSS classes
-      //const self = this;
+    createBoard: function() {
       boardLogic.createCheckArray(this.width, this.height);
 
       for (let i = 0; i < this.height; i++) {
@@ -163,6 +105,8 @@ $(document).ready(function() {
          const row = $(this).data('box-row');
          const col = $(this).data('box-col');
          boardLogic.addToken(row, col, token); // add token to check array
+
+         // a: row, b: col, winnerToken: token, sort, which examination
          const [a, b, winnerToken, sort] = boardLogic.checkResult(row, col, token, self.symbolAmount);
          //console.log(a, b, winnerToken, sort);
          self.showSequence(a, b, self.symbolAmount, sort);
@@ -178,13 +122,16 @@ $(document).ready(function() {
 
     createResizeBoard: function() {
       this.createBoard();
+
+      // bad solution so far, because resize event got triggered several time in specific period, for next update using time trigger treshold
       $(window).resize(() => { // arrow function to bind this
         $('div[data-box-row]').remove();
-        this.resizeCounter++;
-        if (this.resizeCounter === 1) {
-          this.resizeStateBefore = boardLogic.boardArray;
-        }
+        // old state will be stored in resizeStateBefore
+        this.resizeStateBefore = Array.from(boardLogic.boardArray);
+        // boardArray got deleted after following method
         this.createBoard();
+        // restore boardArray with copied array variable
+        boardLogic.boardArray = Array.from(this.resizeStateBefore);
         this.saveState();
       });
     },
@@ -196,12 +143,6 @@ $(document).ready(function() {
           $(`[data-box-row=${i}][data-box-col=${j}]`).text(this.resizeStateBefore[i][j].trim());
           // boardLogic array has whitespace which needs to be deleted
         }
-      }
-      // resize event invokes several time, copied array will be deleted at the last invoke
-      if ($('.boardBox').text().match(/[XO]/)) {
-        boardLogic.boardArray = this.resizeStateBefore; // boardLogic Array got lost during resizing
-        this.resizeStateBefore = [];
-        this.resizeCounter = 0;
       }
     },
 
