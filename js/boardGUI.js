@@ -32,7 +32,7 @@ $(document).ready(function() {
     },
 
 
-    createOnlineGame: function() {
+    /*createOnlineGame: function() {
       this.tokens = this.tokens[0] === $('#tokenSelection').val() ? this.tokens : this.tokens.reverse();
       const player = this.players.player1;
       player.name = $('#setPlayer1').val() || 'Player1';
@@ -77,7 +77,7 @@ $(document).ready(function() {
           playerScore: 0
       });
 
-    },
+    },*/
 
     startGame: function() {
       $('#start').on('click', () => { // arrow function due to this
